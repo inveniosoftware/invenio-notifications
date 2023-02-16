@@ -1,0 +1,3 @@
+{{ _('Invitation declined') }}
+
+{{ _('View invitation') }}: {{ notification.data['request']['links']['self_html'] }}
