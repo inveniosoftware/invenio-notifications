@@ -43,5 +43,4 @@ class InvenioNotifications(object):
         for id, backend_cls in cfg.backends.items():
             manager.register(backend_cls())
 
-        manager.validate_policy()
         self.manager = manager

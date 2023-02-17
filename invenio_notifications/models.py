@@ -16,7 +16,7 @@ from datetime import datetime
 class Notification(dict):
     """Notification class."""
 
-    type: str  # one of the registered notification types e.g comment_edit, new_invitation etc
+    type: str  # event type e.g comment_edit, new_invitation etc
     data: dict  # depending on the type. dump of a record, community, etc.
     recipients: list  # list of user dumps
     trigger: dict  # info about who triggered (and dump thereof), if it was manual or automatic
