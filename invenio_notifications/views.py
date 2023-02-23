@@ -8,6 +8,17 @@
 
 """Notifications views module."""
 
-from .ui import create_ui_blueprint
 
-__all__ = ("create_ui_blueprint",)
+from flask import Blueprint
+
+
+def create_blueprint(app):
+    """Register blueprint routes on app."""
+    blueprint = Blueprint(
+        "invenio_notifications",
+        __name__,
+        template_folder="/templates",
+        static_folder="../static",
+    )
+
+    return blueprint
