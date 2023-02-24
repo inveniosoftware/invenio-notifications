@@ -12,8 +12,8 @@ from celery import shared_task
 from flask import current_app
 from flask_babelex import gettext as _
 
-from invenio_notifications.backends.backend import NotificationBackend
-from invenio_notifications.backends.loaders import JinjaTemplateLoaderMixin
+from invenio_notifications.backends.base import NotificationBackend
+from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixin
 
 
 class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):

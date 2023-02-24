@@ -6,8 +6,8 @@
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Notifications email specific module."""
+"""Notifications backend utils module."""
 
-from .backend import EmailNotificationBackend
+from .loaders import JinjaTemplateLoaderMixin
 
-__all__ = ("EmailNotificationBackend",)
+__all__ = ("JinjaTemplateLoaderMixin",)

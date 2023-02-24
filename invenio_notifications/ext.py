@@ -9,6 +9,8 @@
 
 """Invenio module for notifications support."""
 
+from invenio_base.utils import load_or_import_from_config
+
 from . import config
 from .config import NOTIFICATIONS_CONFIG
 from .manager import NotificationManager
@@ -36,11 +38,15 @@ class InvenioNotifications(object):
 
     def init_manager(self, app):
         """Initialize manager."""
-        cfg = app.config.get("NOTIFICATIONS_CONFIG", NOTIFICATIONS_CONFIG)
+        cfg = load_or_import_from_config(
+            "NOTIFICATIONS_CONFIG",
+            app=app,
+            default=NOTIFICATIONS_CONFIG,
+        )
         manager = NotificationManager(
             config=cfg,
         )
-        for id, backend_cls in cfg.backends.items():
+        for backend_cls in cfg.backends:
             manager.register(backend_cls())
 
         self.manager = manager

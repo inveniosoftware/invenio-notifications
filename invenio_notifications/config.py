@@ -11,10 +11,10 @@
 
 from flask_babelex import gettext as _
 
-from .backends.email.backend import EmailNotificationBackend
+from .backends.email import EmailNotificationBackend
 
 NOTIFICATIONS_BACKENDS = {
-    EmailNotificationBackend.id: EmailNotificationBackend,
+    EmailNotificationBackend,
 }
 
 NOTIFICATIONS_DEFAULT_SUBJECT = _("New notification from repository")
