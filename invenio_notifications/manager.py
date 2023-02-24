@@ -36,7 +36,6 @@ class NotificationManager:
                 notification.copy(), **kwargs
             )
 
-            # These do not always get logged
             backend.send_notification.apply_async(
                 args=[extended_notification.dumps()],
             )

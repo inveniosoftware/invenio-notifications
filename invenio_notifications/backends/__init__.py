@@ -8,6 +8,10 @@
 
 """Notifications base backend module."""
 
-from .backend import NotificationBackend
+from .base import NotificationBackend
+from .email import EmailNotificationBackend
 
-__all__ = ("NotificationBackend",)
+__all__ = (
+    "EmailNotificationBackend",
+    "NotificationBackend",
+)
