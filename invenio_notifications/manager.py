@@ -29,26 +29,6 @@ class NotificationManager:
         """Check if backend is registered."""
         return backend_id in self._backends
 
-    def _dispatch_notification(self, notification, backend, **kwargs):
-        """Extend notification and start task for sending."""
-        try:
-            extended_notification = backend.extend_notification(
-                notification.copy(), **kwargs
-            )
-
-            backend.send_notification.apply_async(
-                args=[extended_notification.dumps()],
-            )
-
-        except Exception as e:
-            current_app.logger.warning(e)
-            raise e
-
-    def broadcast(self, notification, **kwargs):
-        """Broadcast notification to backends."""
-        for backend in self._backends.values():
-            self._dispatch_notification(notification, backend, **kwargs)
-
     def notify(self, notification, backend_id, **kwargs):
         """Set message and notify specific backend.
 
@@ -59,7 +39,7 @@ class NotificationManager:
             current_app.logger.warning(NotificationBackendNotFoundError(backend_id))
             return
 
-        self._dispatch_notification(notification, backend, **kwargs)
+        backend.send_notification(notification, **kwargs)
 
     def register(self, backend):
         """Register backend in manager."""

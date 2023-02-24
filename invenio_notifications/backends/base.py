@@ -10,8 +10,6 @@
 
 from abc import ABC, abstractmethod
 
-from celery import shared_task
-
 
 class NotificationBackend(ABC):
     """Base class for notification backends."""
@@ -20,12 +18,6 @@ class NotificationBackend(ABC):
     """Unique id of the backend."""
 
     @abstractmethod
-    @shared_task
-    def send_notification(notification):
+    def send_notification(notification, **kwargs):
         """Here each concrete implementation shall dispatch notification message."""
         raise NotImplementedError()
-
-    @abstractmethod
-    def extend_notification(self, notification, **kwargs):
-        """Each concrete implementation will be able to extend the notification."""
-        raise NotImplementedError
