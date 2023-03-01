@@ -13,17 +13,15 @@ from flask_babelex import gettext as _
 
 from .backends.email import EmailNotificationBackend
 
-NOTIFICATIONS_BACKENDS = {
-    EmailNotificationBackend,
-}
-
 NOTIFICATIONS_DEFAULT_SUBJECT = _("New notification from repository")
 
 
 class NotificationConfig:
     """Config."""
 
-    backends = NOTIFICATIONS_BACKENDS
+    backends = {
+        EmailNotificationBackend,
+    }
 
 
 NOTIFICATIONS_CONFIG = NotificationConfig

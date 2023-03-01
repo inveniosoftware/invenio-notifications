@@ -14,6 +14,16 @@ from .proxies import current_notifications_manager
 
 
 @shared_task
-def send_notification(notification, backend_id):
+def _send_notification_via_backend(notification, backend_id):
     """Task to send notification via backend."""
     current_notifications_manager.notify(notification, backend_id)
+
+
+@shared_task
+def broadcast_notification(notification):
+    """Task to spawn single notification tasks."""
+    for recipient in notification.recipients:
+        for backend_payload in recipient.get("backends", []):
+            _send_notification_via_backend.delay(
+                notification, backend_payload.get("backend", "")
+            )
