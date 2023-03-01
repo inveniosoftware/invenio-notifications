@@ -24,7 +24,7 @@ class NotificationBackendNotFoundError(NotificationError):
         :param backend_id: The id of the backend.
         """
         super().__init__(
-            _("Notification backend `{}` is not registered.".format(backend_id))
+            _("Notification backend `{}` is not registered.").format(backend_id)
         )
 
 
@@ -37,5 +37,5 @@ class NotificationBackendAlreadyRegisteredError(NotificationError):
         :param backend_id: The id of the backend.
         """
         super().__init__(
-            _("Notification backend `{}` already registered.".format(backend_id))
+            _("Notification backend `{}` already registered.").format(backend_id)
         )

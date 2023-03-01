@@ -6,7 +6,7 @@
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Notification backend base class used for notifications."""
+"""Notification backend base class."""
 
 from abc import ABC, abstractmethod
 
