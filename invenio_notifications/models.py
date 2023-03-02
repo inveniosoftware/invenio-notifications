@@ -8,7 +8,7 @@
 
 """Models used for notifications."""
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 
 
@@ -27,14 +27,11 @@ class Notification(dict):
         self.data = self["data"] = data
         self.trigger = self["trigger"] = trigger
         self.timestamp = self["timestamp"] = datetime.now().isoformat()
-        self.update(kwargs)
 
     def dumps(self):
         """Dumps the object as dict."""
         # should have a proper dumper defined, to make sure it is serializable for celery
-        d = {k: v for k, v in self.items()}
-        d.update(self.__dict__)
-        return d
+        return asdict(self)
 
     def copy(self):
         """Returns a copy of this object."""
