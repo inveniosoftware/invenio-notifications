@@ -35,5 +35,5 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
         mail_data["html"] = tpl_html.render(notification=notification)
         mail_data["body"] = tpl_txt.render(notification=notification)
         mail_data["subject"] = subject
-        mail_data["sender"] = current_app.config["SECURITY_EMAIL_SENDER"]
+        mail_data["sender"] = current_app.config["MAIL_DEFAULT_SENDER"]
         send_email(mail_data)

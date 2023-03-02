@@ -29,7 +29,7 @@ class NotificationManager:
         """Check if backend is registered."""
         return backend_id in self._backends
 
-    def notify(self, notification, backend_id, **kwargs):
+    def notify_backend(self, backend_notification, backend_id, **kwargs):
         """Set message and notify specific backend.
 
         Will pass the key for the specific backend to notify.
@@ -39,7 +39,7 @@ class NotificationManager:
             current_app.logger.warning(NotificationBackendNotFoundError(backend_id))
             return
 
-        backend.send_notification(notification, **kwargs)
+        backend.send_notification(backend_notification, **kwargs)
 
     def register(self, backend):
         """Register backend in manager."""
