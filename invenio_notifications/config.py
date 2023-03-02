@@ -9,7 +9,7 @@
 
 """Invenio module for notifications support."""
 
-from flask_babelex import gettext as _
+from invenio_i18n import gettext as _
 
 from .backends.email import EmailNotificationBackend
 
