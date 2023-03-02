@@ -10,7 +10,7 @@
 
 from celery import shared_task
 
-from .models import BackendNotification, BroadcastNotification
+from .models import BackendNotification
 from .proxies import current_notifications_manager
 
 
@@ -21,7 +21,7 @@ def _send_notification_via_backend(backend_notification, backend_id):
 
 
 @shared_task
-def broadcast_notification(broadcast_notification: BroadcastNotification):
+def broadcast(broadcast_notification):
     """Task to spawn single notification tasks."""
     for recipient in broadcast_notification.recipients:
         for backend_payload in recipient.backends:
