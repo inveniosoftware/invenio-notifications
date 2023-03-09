@@ -6,11 +6,9 @@
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Notification backend base class used for notifications."""
+"""Notification backend base class."""
 
 from abc import ABC, abstractmethod
-
-from celery import shared_task
 
 
 class NotificationBackend(ABC):
@@ -20,12 +18,6 @@ class NotificationBackend(ABC):
     """Unique id of the backend."""
 
     @abstractmethod
-    @shared_task
-    def send_notification(notification):
+    def send_notification(notification, **kwargs):
         """Here each concrete implementation shall dispatch notification message."""
         raise NotImplementedError()
-
-    @abstractmethod
-    def extend_notification(self, notification, **kwargs):
-        """Each concrete implementation will be able to extend the notification."""
-        raise NotImplementedError
