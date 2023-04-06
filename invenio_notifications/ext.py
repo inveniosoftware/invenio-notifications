@@ -9,10 +9,10 @@
 
 """Invenio module for notifications support."""
 
+from importlib_metadata import entry_points
 from invenio_base.utils import load_or_import_from_config
 
 from . import config
-from .config import NOTIFICATIONS_CONFIG
 from .manager import NotificationManager
 
 
@@ -28,6 +28,7 @@ class InvenioNotifications(object):
         """Flask application initialization."""
         self.init_config(app)
         self.init_manager(app)
+        self.init_registries(app)
         app.extensions["invenio-notifications"] = self
 
     def init_config(self, app):
@@ -38,15 +39,17 @@ class InvenioNotifications(object):
 
     def init_manager(self, app):
         """Initialize manager."""
-        cfg = load_or_import_from_config(
-            "NOTIFICATIONS_CONFIG",
-            app=app,
-            default=NOTIFICATIONS_CONFIG,
-        )
-        manager = NotificationManager(
-            config=cfg,
-        )
+        cfg = load_or_import_from_config("NOTIFICATIONS_CONFIG", app=app)
+        manager = NotificationManager(config=cfg)
         for backend_cls in cfg.backends:
             manager.register(backend_cls())
-
         self.manager = manager
+
+    def init_registries(self, app):
+        """Initialize registries."""
+        self.entity_resolvers = {
+            er.type_id: er for er in app.config["NOTIFICATIONS_ENTITY_RESOLVERS"]
+        }
+        for ep in entry_points(group="invenio_notifications.entity_resolvers"):
+            er_cls = ep.load()
+            self.entity_resolvers.setdefault(er_cls.type_id, er_cls())

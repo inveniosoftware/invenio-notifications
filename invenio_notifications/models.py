@@ -9,33 +9,20 @@
 """Models used for notifications."""
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
 
 
 @dataclass
-class Notification(dict):
+class Notification:
     """Notification base class."""
 
     type: str  # event type e.g comment_edit, new_invitation etc
-    data: dict  # depending on the type. dump of a record, community, etc.
-    trigger: dict  # info about who triggered (and dump thereof), if it was manual or automatic
-    timestamp: str  # when the action happened
+    context: dict  # depending on the type. dump of a record, community, etc.
 
-    def __init__(self, type="", data=None, trigger=None, **kwargs):
-        """Constructor."""
-        self.type = self["type"] = type
-        self.data = self["data"] = data
-        self.trigger = self["trigger"] = trigger
-        self.timestamp = self["timestamp"] = datetime.now().isoformat()
-
-    def dumps(self):
+    # TODO: We might be able to get away with a JSON encoder/decoder instead:
+    #   https://stackoverflow.com/a/51286749
+    def asdict(self):
         """Dumps the object as dict."""
-        # should have a proper dumper defined, to make sure it is serializable for celery
         return asdict(self)
-
-    def copy(self):
-        """Returns a copy of this object."""
-        return Notification(**self.dumps())
 
 
 @dataclass
