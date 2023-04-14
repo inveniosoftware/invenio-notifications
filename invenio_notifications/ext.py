@@ -39,10 +39,11 @@ class InvenioNotifications(object):
 
     def init_manager(self, app):
         """Initialize manager."""
-        cfg = load_or_import_from_config("NOTIFICATIONS_CONFIG", app=app)
-        manager = NotificationManager(config=cfg)
-        for backend_cls in cfg.backends:
-            manager.register(backend_cls())
+        cfg = load_or_import_from_config("NOTIFICATIONS_CONFIG", app=app).build(app)
+        manager = NotificationManager(
+            backends=cfg.backends,
+            builders=cfg.builders,
+        )
         self.manager = manager
 
     def init_registries(self, app):

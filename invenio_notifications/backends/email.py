@@ -13,6 +13,7 @@ from invenio_mail.tasks import send_email
 
 from invenio_notifications.backends.base import NotificationBackend
 from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixin
+from invenio_notifications.models import Notification, Recipient
 
 
 class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
@@ -20,19 +21,19 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
 
     id = "email"
 
-    def send_notification(self, backend_notification, **kwargs):
-        """Construct and send email."""
-        tpl_html = self.get_template(backend_notification["type"] + ".html")
-        tpl_txt = self.get_template(backend_notification["type"] + ".txt")
+    def send(self, notification: Notification, recipient: Recipient):
+        """Mail sending implementation."""
+        content = self.render_template(notification, recipient)
 
-        subject = backend_notification.get(
-            "subject", current_app.config["NOTIFICATIONS_DEFAULT_SUBJECT"]
+        resp = send_email(
+            {
+                "subject": content["subject"],
+                "html": content["html_body"],
+                "body": content["plain_body"],
+                "recipients": [
+                    recipient.data.get("email") or recipient.data.get("email_hidden")
+                ],
+                "sender": current_app.config["MAIL_DEFAULT_SENDER"],
+            }
         )
-
-        mail_data = {}
-        mail_data["recipients"] = [backend_notification.get("payload", {}).get("to")]
-        mail_data["html"] = tpl_html.render(notification=backend_notification)
-        mail_data["body"] = tpl_txt.render(notification=backend_notification)
-        mail_data["subject"] = subject
-        mail_data["sender"] = current_app.config["MAIL_DEFAULT_SENDER"]
-        send_email(mail_data)
+        return resp  # TODO: what would a "delivery" result be

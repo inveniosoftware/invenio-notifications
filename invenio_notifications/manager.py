@@ -9,44 +9,50 @@
 """Initialization used for notifications."""
 
 
-from flask import current_app
-
-from .errors import (
-    NotificationBackendAlreadyRegisteredError,
-    NotificationBackendNotFoundError,
-)
+from invenio_notifications.tasks import broadcast_notification, dispatch_notification
 
 
 class NotificationManager:
-    """Notification manager taking care of backends sending notifications."""
+    def __init__(self, backends, builders):
+        """Ctor."""
+        self.backends = backends  # via config "NOTIFICATIONS_BACKENDS"
+        self.builders = builders  # via config "NOTIFICATIONS_BUILDERS"
 
-    def __init__(self, config):
-        """Constructor."""
-        self._config = config
-        self._backends = {}
+    # def validate(self, notification):
+    #     """Validate notification object."""
+    #     # Validate the type
+    #     ...
+    #     # Validate context (if possible)
+    #     ...
 
-    def _backend_exists(self, backend_id):
-        """Check if backend is registered."""
-        return backend_id in self._backends
+    # Client
+    def broadcast(self, notification, eager=False):
+        """Broadcast a notification via a Celery task."""
+        self.validate(notification)
+        task = broadcast_notification.si(notification.dumps())
+        return task.apply() if eager else task.delay()
 
-    def notify_backend(self, backend_notification, backend_id, **kwargs):
-        """Set message and notify specific backend.
+    # Consumer
+    def handle_broadcast(self, notification):
+        """Handle a notification broadcast."""
+        builder = self.builders[notification.type]
+        # Resolve and expand entities
+        builder.resolve_context(notification)
+        # Generate recipients
+        recipients = builder.build_recipients(notification)
+        recipients = builder.filter_recipients(notification, recipients)
+        for recipient in recipients.values():
+            recipient_backends = builder.build_recipient_backends(
+                notification, recipient
+            )
+            for backend in recipient_backends:
+                dispatch_notification.delay(
+                    backend,
+                    recipient.dumps(),
+                    notification.dumps(),
+                )
 
-        Will pass the key for the specific backend to notify.
-        """
-        backend = self._backends.get(backend_id)
-        if backend is None:
-            current_app.logger.warning(NotificationBackendNotFoundError(backend_id))
-            return
-
-        backend.send_notification(backend_notification, **kwargs)
-
-    def register(self, backend):
-        """Register backend in manager."""
-        if self._backend_exists(backend.id):
-            raise NotificationBackendAlreadyRegisteredError(backend.id)
-        self._backends[backend.id] = backend
-
-    def deregister(self, backend):
-        """Deregister backend in manager."""
-        del self._backends[backend.id]
+    # Dispatch delivery/sending via a backend
+    def handle_dispatch(self, backend_id, recipient, notification):
+        """Handle a backend dispatch."""
+        self.backends[backend_id].send(notification, recipient)
