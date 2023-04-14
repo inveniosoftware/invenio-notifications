@@ -9,7 +9,8 @@
 """Template loaders for notification backend."""
 
 from flask import current_app
-from jinja2 import TemplateNotFound, TemplatesNotFound
+
+from invenio_notifications.models import Notification, Recipient
 
 
 class JinjaTemplateLoaderMixin:
@@ -17,24 +18,28 @@ class JinjaTemplateLoaderMixin:
 
     template_folder = "invenio_notifications"
 
-    def _load_template(self, path):
-        try:
-            template = current_app.jinja_env.get_template(path)
-        except TemplateNotFound:
-            template = None
-
-        return template
-
-    def get_template(self, name):
-        """Retrieves a template from the template folder."""
-        # e.g /notifications/email/comment_edit.html
-        base_template_path = f"{self.template_folder}/{name}"
-        specific_template_path = f"{self.template_folder}/{self.id}/{name}"
-
-        base_template = self._load_template(base_template_path)
-        specific_template = self._load_template(specific_template_path)
-
-        if not specific_template and not base_template:
-            raise TemplatesNotFound(names=[base_template_path, specific_template_path])
-
-        return specific_template or base_template
+    def render_template(self, notification: Notification, recipient: Recipient):
+        # Take locale into account
+        locale = recipient.data.get("locale", "en")
+        template = current_app.jinja_env.select_template(
+            [
+                # Backend-specific templates first, e.g notifications/email/comment_edit.jinja
+                f"{self.template_folder}/{self.id}/{notification.type}.{locale}.jinja",
+                f"{self.template_folder}/{self.id}/{notification.type}.jinja",
+                # Default templates, e.g notifications/comment_edit.jinja
+                f"{self.template_folder}/{notification.type}.{locale}.jinja",
+                f"{self.template_folder}/{notification.type}.jinja",
+            ]
+        )
+        ctx = template.new_context(
+            {
+                "notification": notification,
+                "recipient": recipient,
+            }
+        )
+        return {
+            block: "".join(
+                block_func(ctx)
+            )  # have to evaluate, as block_func is a generator
+            for block, block_func in template.blocks.items()
+        }

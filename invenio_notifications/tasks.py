@@ -10,31 +10,20 @@
 
 from celery import shared_task
 
-from .models import BackendNotification
+from invenio_notifications.models import Notification, Recipient
+
 from .proxies import current_notifications_manager
 
 
 @shared_task
-def send_notification_via_backend(backend_notification, backend_id):
-    """Task to send notification via backend."""
-    current_notifications_manager.notify_backend(backend_notification, backend_id)
+def broadcast_notification(notification):
+    """Handles a notification broadcast."""
+    current_notifications_manager.handle_broadcast(Notification(**notification))
 
 
-@shared_task
-def broadcast(broadcast_notification):
-    """Task to spawn single notification tasks."""
-    for recipient in broadcast_notification.get("recipients", []):
-        for backend_payload in recipient.get("backends", []):
-            # only sending needed information to backend
-            backend_notification = BackendNotification(
-                data=broadcast_notification.get("data", {}),
-                type=broadcast_notification.get("type", ""),
-                trigger=broadcast_notification.get("trigger", {}),
-                timestamp=broadcast_notification.get("timestamp", ""),
-                user=recipient.get("user", {}),
-                payload=backend_payload,
-            )
-            send_notification_via_backend.delay(
-                backend_notification.dumps(),
-                backend_payload.get("id", ""),
-            )
+@shared_task(max_retries=5, default_retry_delay=5 * 60)
+def dispatch_notification(backend, recipient, notification):
+    """Dispatches a notification to a recipient for a specific backend."""
+    current_notifications_manager.handle_dispatch(
+        backend, Recipient(**recipient), Notification(**notification)
+    )

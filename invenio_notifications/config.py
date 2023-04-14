@@ -10,21 +10,8 @@
 """Invenio module for notifications support."""
 
 from invenio_i18n import gettext as _
+from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
 
-from .backends.email import EmailNotificationBackend
-
-NOTIFICATIONS_DEFAULT_SUBJECT = _("New notification from repository")
-
-
-class NotificationConfig:
-    """Config."""
-
-    backends = {
-        EmailNotificationBackend,
-    }
-
-
-NOTIFICATIONS_CONFIG = NotificationConfig
 
 NOTIFICATIONS_BACKENDS = {}
 """Notification backends.
@@ -52,3 +39,13 @@ NOTIFICATIONS_BUILDERS = {
 
 NOTIFICATIONS_ENTITY_RESOLVERS = []
 """List of entity resolvers used by notification builders."""
+
+
+class NotificationConfig(ConfiguratorMixin):
+    """Config."""
+
+    backends = FromConfig("NOTIFICATIONS_BACKENDS", NOTIFICATIONS_BACKENDS)
+    builders = FromConfig("NOTIFICATIONS_BUILDERS", NOTIFICATIONS_BACKENDS)
+
+
+NOTIFICATIONS_CONFIG = NotificationConfig
