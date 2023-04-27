@@ -10,8 +10,6 @@
 
 from abc import ABC, abstractmethod
 
-from invenio_notifications.models import Notification, Recipient
-
 
 class NotificationBackend(ABC):
     """Base class for notification backends."""
@@ -20,6 +18,6 @@ class NotificationBackend(ABC):
     """Unique id of the backend."""
 
     @abstractmethod
-    def send(self, notification: Notification, recipient: Recipient):
+    def send(self, notification, recipient):
         """Send the notification message."""
         raise NotImplementedError()
