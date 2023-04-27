@@ -10,15 +10,19 @@
 
 from flask import current_app
 
-from invenio_notifications.models import Notification, Recipient
-
 
 class JinjaTemplateLoaderMixin:
     """Used only in NotificationBackend classes."""
 
     template_folder = "invenio_notifications"
 
-    def render_template(self, notification: Notification, recipient: Recipient):
+    def render_template(self, notification, recipient):
+        """Render template for a notification.
+
+        Fetch the template based on the notification type and return the template blocks.
+        More specific templates take precedence over less specific ones.
+        Rendered template will also take the locale into account.
+        """
         # Take locale into account
         locale = recipient.data.get("locale", "en")
         template = current_app.jinja_env.select_template(

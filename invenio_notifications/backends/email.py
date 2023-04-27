@@ -13,7 +13,6 @@ from invenio_mail.tasks import send_email
 
 from invenio_notifications.backends.base import NotificationBackend
 from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixin
-from invenio_notifications.models import Notification, Recipient
 
 
 class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
@@ -21,7 +20,7 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
 
     id = "email"
 
-    def send(self, notification: Notification, recipient: Recipient):
+    def send(self, notification, recipient):
         """Mail sending implementation."""
         content = self.render_template(notification, recipient)
 

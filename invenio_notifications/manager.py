@@ -6,13 +6,18 @@
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Initialization used for notifications."""
+"""Notification manager."""
 
 
 from invenio_notifications.tasks import broadcast_notification, dispatch_notification
 
 
 class NotificationManager:
+    """Notification manager.
+
+    Taking care of building notifications and forwarding them to the backend(s).
+    """
+
     def __init__(self, backends, builders):
         """Ctor."""
         self.backends = backends  # via config "NOTIFICATIONS_BACKENDS"

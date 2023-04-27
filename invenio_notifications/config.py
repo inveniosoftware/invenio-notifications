@@ -9,18 +9,14 @@
 
 """Invenio module for notifications support."""
 
-from invenio_i18n import gettext as _
-from invenio_records_resources.services.base.config import ConfiguratorMixin, FromConfig
-
-
 NOTIFICATIONS_BACKENDS = {}
 """Notification backends.
 
 NOTIFICATIONS_BACKENDS = {
-    "email": EmailBackend,
+    "email": "EmailBackend",
     "cern": CERNNotificationsBackend,
     "slack": SlackBackend,
-}
+    }
 """
 
 NOTIFICATIONS_BUILDERS = {}
@@ -34,18 +30,17 @@ NOTIFICATIONS_BUILDERS = {
     "member_invitation_accept": CommunityMemberInvitationAccept,
     "member_invitation_reject": CommunityMemberInvitationReject,
     "request_comment_create": RequestCommentCreate,
-}
+    }
 """
 
 NOTIFICATIONS_ENTITY_RESOLVERS = []
-"""List of entity resolvers used by notification builders."""
+"""List of entity resolvers used by notification builders.
 
-
-class NotificationConfig(ConfiguratorMixin):
-    """Config."""
-
-    backends = FromConfig("NOTIFICATIONS_BACKENDS", NOTIFICATIONS_BACKENDS)
-    builders = FromConfig("NOTIFICATIONS_BUILDERS", NOTIFICATIONS_BACKENDS)
-
-
-NOTIFICATIONS_CONFIG = NotificationConfig
+NOTIFICATIONS_ENTITY_RESOLVERS = [
+    UserResultItemResolver(),
+    RDMRecordResultItemResolver(),
+    CommunityResultItemResolver(),
+    RequestResultItemResolver(),
+    RequestEventResultItemResolver(),
+    ]
+"""

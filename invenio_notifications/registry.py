@@ -1,3 +1,14 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of Invenio.
+# Copyright (C) 2023 CERN.
+#
+# Invenio-Notifications is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
+
+"""Entity resolver registry for notifications."""
+
+
 from invenio_records_resources.references.registry import ResolverRegistryBase
 
 from .proxies import current_notifications

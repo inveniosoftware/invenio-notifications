@@ -38,4 +38,5 @@ class Recipient:
     data: dict  # user dump
 
     def dumps(self):
+        """Dumps the object as dict."""
         return asdict(self)
