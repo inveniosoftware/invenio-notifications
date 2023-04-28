@@ -47,8 +47,8 @@ class InvenioNotifications(object):
     def init_registries(self, app):
         """Initialize registries."""
         self.entity_resolvers = {
-            er.type_id: er for er in app.config["NOTIFICATIONS_ENTITY_RESOLVERS"]
+            er.type_key: er for er in app.config["NOTIFICATIONS_ENTITY_RESOLVERS"]
         }
         for ep in entry_points(group="invenio_notifications.entity_resolvers"):
             er_cls = ep.load()
-            self.entity_resolvers.setdefault(er_cls.type_id, er_cls())
+            self.entity_resolvers.setdefault(er_cls.type_key, er_cls())
