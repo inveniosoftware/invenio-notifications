@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 
 from invenio_records.dictutils import dict_lookup, dict_set
 
+from invenio_notifications.backends.email import EmailNotificationBackend
 from invenio_notifications.registry import EntityResolverRegistry
 
 
@@ -55,3 +56,13 @@ class EntityResolve(ContextGenerator):
         entity = EntityResolverRegistry.resolve_entity(entity_ref)
         dict_set(notification.context, self.key, entity)
         return notification
+
+
+class UserEmailBackend(RecipientBackendGenerator):
+    """User related email backend generator for a notification."""
+
+    def __call__(self, notification, recipient, backends):
+        """Add backend id to backends."""
+        backend_id = EmailNotificationBackend.id
+        backends.append(backend_id)
+        return backend_id
