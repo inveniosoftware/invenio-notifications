@@ -9,7 +9,7 @@
 
 """Builderes for notifications."""
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 from invenio_notifications.services.filters import RecipientFilter
 from invenio_notifications.services.generators import (
@@ -19,7 +19,7 @@ from invenio_notifications.services.generators import (
 )
 
 
-class NotificationBuilder:
+class NotificationBuilder(ABC):
     """Base notification builder."""
 
     context: list[ContextGenerator]

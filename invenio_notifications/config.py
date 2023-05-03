@@ -12,35 +12,41 @@
 NOTIFICATIONS_BACKENDS = {}
 """Notification backends.
 
-NOTIFICATIONS_BACKENDS = {
-    "email": "EmailBackend",
-    "cern": CERNNotificationsBackend,
-    "slack": SlackBackend,
+.. code-block::python
+
+    NOTIFICATIONS_BACKENDS = {
+        "email": EmailBackend,
+        "cern": CERNNotificationsBackend,
+        "slack": SlackBackend,
     }
 """
 
 NOTIFICATIONS_BUILDERS = {}
 """Notification builders.
 
-NOTIFICATIONS_BUILDERS = {
-    "community_submission_create": CommunitySubmissionCreate,
-    "community_submission_accept": CommunitySubmissionAccept,
-    "community_submission_reject": CommunitySubmissionReject,
-    "member_invitation_create": CommunityMemberInvitationCreate,
-    "member_invitation_accept": CommunityMemberInvitationAccept,
-    "member_invitation_reject": CommunityMemberInvitationReject,
-    "request_comment_create": RequestCommentCreate,
+.. code-block::python
+
+    NOTIFICATIONS_BUILDERS = {
+        "community_submission_create": CommunitySubmissionCreate,
+        "community_submission_accept": CommunitySubmissionAccept,
+        "community_submission_reject": CommunitySubmissionReject,
+        "member_invitation_create": CommunityMemberInvitationCreate,
+        "member_invitation_accept": CommunityMemberInvitationAccept,
+        "member_invitation_reject": CommunityMemberInvitationReject,
+        "request_comment_create": RequestCommentCreate,
     }
 """
 
 NOTIFICATIONS_ENTITY_RESOLVERS = []
 """List of entity resolvers used by notification builders.
 
-NOTIFICATIONS_ENTITY_RESOLVERS = [
-    UserResultItemResolver(),
-    RDMRecordResultItemResolver(),
-    CommunityResultItemResolver(),
-    RequestResultItemResolver(),
-    RequestEventResultItemResolver(),
+.. code-block::python
+
+    NOTIFICATIONS_ENTITY_RESOLVERS = [
+        UserResultItemResolver(),
+        RDMRecordResultItemResolver(),
+        CommunityResultItemResolver(),
+        RequestResultItemResolver(),
+        RequestEventResultItemResolver(),
     ]
 """
