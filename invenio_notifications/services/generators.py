@@ -15,7 +15,7 @@ from invenio_records.dictutils import dict_lookup, dict_set
 from invenio_notifications.registry import EntityResolverRegistry
 
 
-class ContextGenerator:
+class ContextGenerator(ABC):
     """Payload generator for a notification."""
 
     @abstractmethod
