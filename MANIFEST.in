@@ -22,3 +22,4 @@ recursive-include docs Makefile
 recursive-include invenio_notifications *.html *.txt
 recursive-include invenio_notifications/translations *.po *.pot *.mo
 recursive-include tests *.py
+recursive-include invenio_notifications *.gitkeep
