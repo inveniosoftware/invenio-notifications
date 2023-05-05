@@ -8,6 +8,10 @@
 Changes
 =======
 
-Version 0.1.0
+Version 0.1.1 (released 2023-05-05)
+
+- remove type hints
+
+Version 0.1.0 (released 2023-05-04)
 
 - Initial public release.
