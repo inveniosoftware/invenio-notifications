@@ -11,21 +11,21 @@
 
 from abc import ABC, abstractmethod
 
-from invenio_notifications.services.filters import RecipientFilter
-from invenio_notifications.services.generators import (
-    ContextGenerator,
-    RecipientBackendGenerator,
-    RecipientGenerator,
-)
-
 
 class NotificationBuilder(ABC):
     """Base notification builder."""
 
-    context: list[ContextGenerator]
-    recipients: list[RecipientGenerator]
-    recipient_filters: list[RecipientFilter]
-    recipient_backends: list[RecipientBackendGenerator]
+    context = []
+    """List of ContextGenerator to update notification context."""
+
+    recipients = []
+    """List of RecipientGenerator."""
+
+    recipient_filters = []
+    """List of RecipientFilter."""
+
+    recipient_backends = []
+    """List of RecipientBackendGenerator."""
 
     type = "Notification"
 
