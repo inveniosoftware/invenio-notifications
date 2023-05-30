@@ -50,3 +50,10 @@ NOTIFICATIONS_ENTITY_RESOLVERS = []
         RequestEventResultItemResolver(),
     ]
 """
+
+NOTIFICATIONS_SETTINGS_VIEW_FUNCTION = None
+"""View function for notification settings.
+
+This should be set higher up in the module hierarchy (e.g. invenio-app-rdm), as
+this module does not have knowledge of the settings view.
+"""
