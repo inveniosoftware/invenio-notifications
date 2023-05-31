@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
+# Copyright (C) 2023 CERN.
 # Copyright (C) 2023 Graz University of Technology.
 #
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
@@ -39,8 +40,14 @@ class JinjaTemplateLoaderMixin:
             {
                 "notification": notification,
                 "recipient": recipient,
-            }
+            },
         )
+
+        # "Force" rendering the whole template (including global variables).
+        # Since we render block by block afterwards, the context and variables
+        # would be lost between blocks.
+        list(template.root_render_func(ctx))
+
         return {
             block: "".join(
                 block_func(ctx)
