@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 0.2.0 (released 2023-06-06)
+
+- views: register notification settings menu
+- backends: render template fully once to establish context
+
 Version 0.1.1 (released 2023-05-05)
 
 - remove type hints
