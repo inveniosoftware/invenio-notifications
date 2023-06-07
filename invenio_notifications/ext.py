@@ -10,6 +10,9 @@
 """Invenio module for notifications support."""
 
 from importlib_metadata import entry_points
+from invenio_i18n import LazyString
+from invenio_i18n import lazy_gettext as _
+from invenio_theme.proxies import current_theme_icons
 
 from . import config
 from .manager import NotificationManager
@@ -52,3 +55,22 @@ class InvenioNotifications(object):
         for ep in entry_points(group="invenio_notifications.entity_resolvers"):
             er_cls = ep.load()
             self.entity_resolvers.setdefault(er_cls.type_key, er_cls())
+
+
+def finalize_app(app):
+    """Finalize app."""
+    menu = app.extensions["menu"]
+    if app.config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"]:
+        menu.submenu("settings.notifications").register(
+            endpoint="invenio_notifications_settings.index",
+            text=_(
+                "%(icon)s Notifications",
+                icon=LazyString(lambda: f'<i class="{current_theme_icons.bell}"></i>'),
+            ),
+            order=2,
+        )
+
+        menu.submenu("breadcrumbs.settings.notifications").register(
+            endpoint="invenio_notifications_settings.index",
+            text=_("Notifications"),
+        )
