@@ -10,6 +10,8 @@
 """Template loaders for notification backend."""
 
 from flask import current_app
+from invenio_i18n import force_locale, get_locale
+from invenio_i18n.proxies import current_i18n
 
 
 class JinjaTemplateLoaderMixin:
@@ -24,8 +26,11 @@ class JinjaTemplateLoaderMixin:
         More specific templates take precedence over less specific ones.
         Rendered template will also take the locale into account.
         """
-        # Take locale into account
-        locale = recipient.data.get("locale", "en")
+        # Take recipient locale into account. Fallback to default locale (set via config variable)
+        locale = recipient.data.get("preferences", {}).get("locale")
+        if not current_i18n.is_locale_available(locale):
+            locale = get_locale()
+
         template = current_app.jinja_env.select_template(
             [
                 # Backend-specific templates first, e.g notifications/email/comment_edit.jinja
@@ -43,14 +48,16 @@ class JinjaTemplateLoaderMixin:
             },
         )
 
-        # "Force" rendering the whole template (including global variables).
-        # Since we render block by block afterwards, the context and variables
-        # would be lost between blocks.
-        list(template.root_render_func(ctx))
+        # Forcing the locale of the recipient so the correct language is chosen for translatable strings
+        with force_locale(locale):
+            # "Force" rendering the whole template (including global variables).
+            # Since we render block by block afterwards, the context and variables
+            # would be lost between blocks.
+            list(template.root_render_func(ctx))
 
-        return {
-            block: "".join(
-                block_func(ctx)
-            )  # have to evaluate, as block_func is a generator
-            for block, block_func in template.blocks.items()
-        }
+            return {
+                block: "".join(
+                    block_func(ctx)
+                )  # have to evaluate, as block_func is a generator
+                for block, block_func in template.blocks.items()
+            }
