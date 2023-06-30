@@ -24,7 +24,7 @@
 #    $ tx pull -a
 
 [main]
-host = https://www.transifex.com
+host = https://app.transifex.com
 
 [invenio.invenio-notifications-messages]
 file_filter = invenio_notifications/translations/<lang>/LC_MESSAGES/messages.po
