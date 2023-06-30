@@ -8,8 +8,6 @@
 
 """Errors used in notification system."""
 
-from invenio_i18n import gettext as _
-
 
 class NotificationError(Exception):
     """General notification."""
@@ -24,7 +22,7 @@ class NotificationBackendNotFoundError(NotificationError):
         :param backend_id: The id of the backend.
         """
         super().__init__(
-            _("Notification backend `{}` is not registered.").format(backend_id)
+            "Notification backend `{id}` is not registered.".format(id=backend_id)
         )
 
 
@@ -37,5 +35,5 @@ class NotificationBackendAlreadyRegisteredError(NotificationError):
         :param backend_id: The id of the backend.
         """
         super().__init__(
-            _("Notification backend `{}` already registered.").format(backend_id)
+            "Notification backend `{id}` already registered.".format(id=backend_id)
         )

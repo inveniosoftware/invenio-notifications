@@ -1,3 +1,0 @@
-{{ _('Invitation accepted') }}
-
-{{ _('View invitation') }}: {{ notification.data['request']['links']['self_html'] }}
