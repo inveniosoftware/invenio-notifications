@@ -1,3 +1,0 @@
-{{ _('Submission created') }}
-
-{{ _('View submission') }}: {{ notification.data['request']['links']['self_html'] }}
