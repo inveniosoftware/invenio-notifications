@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 0.2.1 (released 2023-07-12)
+
+- force locale when rendering template in task
+
 Version 0.2.0 (released 2023-06-06)
 
 - views: register notification settings menu
