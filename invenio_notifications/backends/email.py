@@ -10,6 +10,7 @@
 
 from flask import current_app
 from invenio_mail.tasks import send_email
+from marshmallow_utils.html import strip_html
 
 from invenio_notifications.backends.base import NotificationBackend
 from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixin
@@ -28,7 +29,7 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
             {
                 "subject": content["subject"],
                 "html": content["html_body"],
-                "body": content["plain_body"],
+                "body": strip_html(content["plain_body"]),
                 "recipients": [
                     recipient.data.get("email") or recipient.data.get("email_hidden")
                 ],
