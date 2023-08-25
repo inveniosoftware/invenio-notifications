@@ -34,6 +34,7 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
                     recipient.data.get("email") or recipient.data.get("email_hidden")
                 ],
                 "sender": current_app.config["MAIL_DEFAULT_SENDER"],
+                "reply_to": current_app.config["MAIL_DEFAULT_REPLY_TO"],
             }
         )
         return resp  # TODO: what would a "delivery" result be
