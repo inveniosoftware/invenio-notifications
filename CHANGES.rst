@@ -8,6 +8,12 @@
 Changes
 =======
 
+Version 0.3.0 (released 2023-08-30)
+
+- backends: strip html tags for plain text mail
+- i18n: remove gettext call for backend only messages
+- i18n: add transifex config
+
 Version 0.2.1 (released 2023-07-12)
 
 - force locale when rendering template in task
