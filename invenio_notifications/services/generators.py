@@ -34,6 +34,28 @@ class RecipientGenerator(ABC):
         raise NotImplementedError()
 
 
+class ConditionalRecipientGenerator(RecipientGenerator):
+    """Conditional recipient generator for a notification."""
+
+    def __init__(self, then_, else_):
+        """Ctor."""
+        self.then_ = then_
+        self.else_ = else_
+
+    def _condition(self, notification, recipients):
+        raise NotImplementedError()
+
+    def __call__(self, notification, recipients):
+        """Call applicable generators."""
+        generators = (
+            self.then_ if self._condition(notification, recipients) else self.else_
+        )
+        for generator in generators:
+            generator(notification, recipients)
+
+        return notification
+
+
 class RecipientBackendGenerator(ABC):
     """Backend generator for a notification."""
 
