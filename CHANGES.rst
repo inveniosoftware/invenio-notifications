@@ -8,6 +8,11 @@
 Changes
 =======
 
+Version 0.4.0 (released 2023-10-06)
+
+- backends: set email reply to field
+- generators: add conditional recipient generator
+
 Version 0.3.0 (released 2023-08-30)
 
 - backends: strip html tags for plain text mail
