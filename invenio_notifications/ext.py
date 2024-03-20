@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 CERN.
-# Copyright (C) 2023 Graz University of Technology.
+# Copyright (C) 2023-2024 Graz University of Technology.
 #
 # Invenio-Notifications is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -9,6 +9,8 @@
 
 """Invenio module for notifications support."""
 
+
+from flask_menu import current_menu
 from importlib_metadata import entry_points
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
@@ -59,9 +61,8 @@ class InvenioNotifications(object):
 
 def finalize_app(app):
     """Finalize app."""
-    menu = app.extensions["menu"]
     if app.config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"]:
-        menu.submenu("settings.notifications").register(
+        current_menu.submenu("settings.notifications").register(
             endpoint="invenio_notifications_settings.index",
             text=_(
                 "%(icon)s Notifications",
@@ -70,7 +71,7 @@ def finalize_app(app):
             order=2,
         )
 
-        menu.submenu("breadcrumbs.settings.notifications").register(
+        current_menu.submenu("breadcrumbs.settings.notifications").register(
             endpoint="invenio_notifications_settings.index",
             text=_("Notifications"),
         )
