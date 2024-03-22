@@ -8,6 +8,13 @@
 Changes
 =======
 
+Version 0.5.0 (released 2024-03-22)
+
+- init: move menu and breadcrumb into finalize_app
+  (removes before_first_request deprecation)
+- Fix transifex config
+
+
 Version 0.4.0 (released 2023-10-06)
 
 - backends: set email reply to field
