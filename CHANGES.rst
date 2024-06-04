@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 0.6.0 (released 2024-06-04)
+
+- dependencies: bump invenio-records-resources
+
 Version 0.5.0 (released 2024-03-22)
 
 - init: move menu and breadcrumb into finalize_app
