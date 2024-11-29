@@ -1,5 +1,6 @@
 ..
     Copyright (C) 2023 CERN.
+    Copyright (C) 2024 Graz University of Technology.
 
     Invenio-Notifications is free software; you can redistribute it and/or
     modify it under the terms of the MIT License; see LICENSE file for more
@@ -7,6 +8,12 @@
 
 Changes
 =======
+
+Version 0.6.1 (release 2024-11-30)
+
+- setup: change to reusable workflows
+- setup: pin dependencies
+- i18n:push translations
 
 Version 0.6.0 (released 2024-06-04)
 
