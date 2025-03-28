@@ -11,6 +11,7 @@
 from abc import ABC, abstractmethod
 
 from invenio_records.dictutils import dict_lookup, dict_set
+from invenio_records_resources.services.errors import PermissionDeniedError
 
 from invenio_notifications.backends.email import EmailNotificationBackend
 from invenio_notifications.registry import EntityResolverRegistry
@@ -74,9 +75,14 @@ class EntityResolve(ContextGenerator):
 
     def __call__(self, notification):
         """Update required recipient information and add backend id."""
-        entity_ref = dict_lookup(notification.context, self.key)
-        entity = EntityResolverRegistry.resolve_entity(entity_ref)
-        dict_set(notification.context, self.key, entity)
+        try:
+            entity_ref = dict_lookup(notification.context, self.key)
+            entity = EntityResolverRegistry.resolve_entity(entity_ref)
+            dict_set(notification.context, self.key, entity)
+        except PermissionDeniedError:
+            # The users service masks "not found" with "permission denied" for privacy
+            pass
+
         return notification
 
 

@@ -10,6 +10,10 @@ Changes
 =======
 
 
+Version <next>
+
+- generators: skip resolved entity on permission denied error
+
 Version 1.0.0 (release 2024-12-10)
 
 - setup: bump major dependencies
