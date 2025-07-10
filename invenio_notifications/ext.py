@@ -11,7 +11,7 @@
 
 
 from flask_menu import current_menu
-from importlib_metadata import entry_points
+from invenio_base.utils import entry_points
 from invenio_i18n import LazyString
 from invenio_i18n import lazy_gettext as _
 from invenio_theme.proxies import current_theme_icons
