@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version v1.1.0 (released 2025-07-14)
+
+- chores: replaced importlib_xyz with importlib
+- i18n: push translations
+- fix: setuptools compatibility
+
 
 Version 1.0.0 (release 2024-12-10)
 
