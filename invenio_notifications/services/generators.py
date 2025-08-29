@@ -75,6 +75,8 @@ class EntityResolve(ContextGenerator):
     def __call__(self, notification):
         """Update required recipient information and add backend id."""
         entity_ref = dict_lookup(notification.context, self.key)
+        if entity_ref is None:
+            return notification
         entity = EntityResolverRegistry.resolve_entity(entity_ref)
         dict_set(notification.context, self.key, entity)
         return notification
