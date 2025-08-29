@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version v1.2.1 (released 2025-08-29)
+
+- fix: return notif when entity ref is none
+
 Version v1.2.0 (released 2025-07-17)
 
 - i18n: pulled translations

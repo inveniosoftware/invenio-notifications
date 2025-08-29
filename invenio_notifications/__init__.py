@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2023 CERN.
+# Copyright (C) 2023-2025 CERN.
 # Copyright (C) 2023-2024 Graz University of Technology.
 #
 # Invenio-Notifications is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 from .ext import InvenioNotifications
 from .proxies import current_notifications, current_notifications_manager
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 __all__ = (
     "__version__",
