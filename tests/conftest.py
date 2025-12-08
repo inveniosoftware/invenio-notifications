@@ -13,6 +13,7 @@ fixtures are available.
 """
 
 import pytest
+from flask import Flask
 from invenio_app.factory import create_app as _create_app
 
 
@@ -28,3 +29,12 @@ def app_config(app_config):
 def create_app(instance_path):
     """Application factory fixture."""
     return _create_app
+
+
+@pytest.fixture
+def simple_app():
+    """Create a minimal Flask app for email resolution tests."""
+    app = Flask("testapp")
+    app.config["MAIL_DEFAULT_SENDER"] = "noreply@example.org"
+    app.config["MAIL_DEFAULT_REPLY_TO"] = "noreply@example.org"
+    return app

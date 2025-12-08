@@ -57,3 +57,16 @@ NOTIFICATIONS_SETTINGS_VIEW_FUNCTION = None
 This should be set higher up in the module hierarchy (e.g. invenio-app-rdm), as
 this module does not have knowledge of the settings view.
 """
+
+NOTIFICATIONS_GROUP_EMAIL_DOMAIN = None
+"""Domain suffix to append to group names when email is not provided.
+
+When a recipient is a group and has no email or email_hidden field, the group's
+name will be used as the email address with this domain appended.
+
+Example:
+    NOTIFICATIONS_GROUP_EMAIL_DOMAIN = "cern.ch"
+    # Group "physics-team" becomes "physics-team@cern.ch"
+
+Set to None to disable domain formatting (groups must have email field set).
+"""
