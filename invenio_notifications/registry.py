@@ -8,7 +8,6 @@
 
 """Entity resolver registry for notifications."""
 
-
 from invenio_records_resources.references.registry import ResolverRegistryBase
 
 from .proxies import current_notifications

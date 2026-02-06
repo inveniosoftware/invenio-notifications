@@ -9,7 +9,6 @@
 
 """Invenio module for notifications support."""
 
-
 from flask_menu import current_menu
 from invenio_base.utils import entry_points
 from invenio_i18n import LazyString
