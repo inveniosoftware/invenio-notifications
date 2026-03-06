@@ -67,14 +67,15 @@ class TestEmailResolution:
             email = backend._resolve_email(recipient)
             assert email == "physics-team@cern.ch"
 
-    def test_resolve_email_group_without_domain(self, simple_app):
-        """Test group name without domain config (backward compatible)."""
+    def test_resolve_email_group_without_domain(self, simple_app, caplog):
+        """Test group name without domain config returns None and logs a warning."""
         with simple_app.app_context():
             simple_app.config["NOTIFICATIONS_GROUP_EMAIL_DOMAIN"] = None
             backend = EmailNotificationBackend()
             recipient = Recipient(data={"name": "physics-team"})
             email = backend._resolve_email(recipient)
-            assert email == "physics-team"
+            assert email is None
+            assert "NOTIFICATIONS_GROUP_EMAIL_DOMAIN" in caplog.text
 
     def test_resolve_email_name_with_at_symbol(self, simple_app):
         """Test name that already contains @ is used as-is."""

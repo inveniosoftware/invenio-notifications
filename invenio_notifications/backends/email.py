@@ -28,7 +28,7 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
         1. Use explicit email field if present
         2. Use email_hidden field if present
         3. For groups: format name with domain (if configured)
-        4. Fallback to name as-is (for backward compatibility)
+        4. Return None and log a warning if no valid email can be resolved
 
         Args:
             recipient: Recipient object with data dict
@@ -59,8 +59,11 @@ class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
         if domain:
             return f"{name}@{domain}"
 
-        # Backward compatibility: return name without domain
-        return name
+        current_app.logger.warning(
+            f"Cannot resolve email for recipient '{name}': name is not a valid email "
+            f"and NOTIFICATIONS_GROUP_EMAIL_DOMAIN is not configured."
+        )
+        return None
 
     def send(self, notification, recipient):
         """Mail sending implementation."""
