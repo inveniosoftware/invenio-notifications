@@ -10,6 +10,11 @@
 Changes
 =======
 
+Version v1.3.0 (released 2026-03-09)
+
+- feature: add `NOTIFICATIONS_GROUP_EMAIL_DOMAIN`
+           to allow sending emails to group recipients
+
 Version v1.2.3 (released 2025-12-08)
 
 - i18n: pulled translations
