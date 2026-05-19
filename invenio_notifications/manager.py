@@ -8,7 +8,7 @@
 
 """Notification manager."""
 
-from invenio_notifications.tasks import broadcast_notification, dispatch_notification
+from .tasks import broadcast_notification, dispatch_notification
 
 
 class NotificationManager:

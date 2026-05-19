@@ -12,8 +12,8 @@ from flask import current_app
 from invenio_mail.tasks import send_email
 from marshmallow_utils.html import strip_html
 
-from invenio_notifications.backends.base import NotificationBackend
-from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixin
+from .base import NotificationBackend
+from .utils.loaders import JinjaTemplateLoaderMixin
 
 
 class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):

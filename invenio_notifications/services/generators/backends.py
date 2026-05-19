@@ -11,7 +11,7 @@
 
 from abc import ABC, abstractmethod
 
-from invenio_notifications.backends.email import EmailNotificationBackend
+from ...backends.email import EmailNotificationBackend
 
 
 class RecipientBackendGenerator(ABC):

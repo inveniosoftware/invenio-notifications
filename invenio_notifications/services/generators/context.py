@@ -13,7 +13,7 @@ from abc import ABC, abstractmethod
 
 from invenio_records.dictutils import dict_lookup, dict_set
 
-from invenio_notifications.registry import EntityResolverRegistry
+from ...registry import EntityResolverRegistry
 
 
 class ContextGenerator(ABC):

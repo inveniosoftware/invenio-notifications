@@ -10,8 +10,7 @@
 
 from celery import shared_task
 
-from invenio_notifications.models import Notification, Recipient
-
+from .models import Notification, Recipient
 from .proxies import current_notifications_manager
 
 
