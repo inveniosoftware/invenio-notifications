@@ -18,7 +18,10 @@ class RecipientFilter(ABC):
 
     @abstractmethod
     def __call__(self, notification, recipients):
-        """Filter recipients."""
+        """Filter recipients.
+
+        The ``recipients`` dictionary is intended to be modified in place.
+        """
         raise NotImplementedError()
 
 
@@ -31,7 +34,10 @@ class KeyRecipientFilter(RecipientFilter):
         self._key = key
 
     def __call__(self, notification, recipients):
-        """Filter recipients."""
+        """Filter recipients with a certain key.
+
+        The ``recipients`` dictionary is intended to be modified in place.
+        """
         recipient_key = dict_lookup(notification.context, self._key)
         if not isinstance(recipient_key, str):
             return recipients

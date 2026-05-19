@@ -20,7 +20,11 @@ from .manager import NotificationManager
 
 
 class InvenioNotifications(object):
-    """Invenio-Notifications extension."""
+    """Invenio-Notifications extension.
+
+    Initializes and keeps track of the notification manager, with
+    notification builders, builders, and entity resolvers.
+    """
 
     def __init__(self, app=None):
         """Extension initialization."""
@@ -59,7 +63,7 @@ class InvenioNotifications(object):
 
 
 def finalize_app(app):
-    """Finalize app."""
+    """Register notification menu items on app finalization."""
     if app.config["NOTIFICATIONS_SETTINGS_VIEW_FUNCTION"]:
         current_menu.submenu("settings.notifications").register(
             endpoint="invenio_notifications_settings.index",

@@ -15,7 +15,7 @@ class NotificationBackend(ABC):
     """Base class for notification backends."""
 
     id = None
-    """Unique id of the backend."""
+    """Unique ID of the backend."""
 
     @abstractmethod
     def send(self, notification, recipient):

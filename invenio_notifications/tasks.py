@@ -17,13 +17,21 @@ from .proxies import current_notifications_manager
 
 @shared_task
 def broadcast_notification(notification):
-    """Handles a notification broadcast."""
+    """Handles a notification broadcast via the current ``NotificationManager``.
+
+    Due to possible data type restrictions for background tasks, the ``notification``
+    argument is expected to be a dictionary.
+    """
     current_notifications_manager.handle_broadcast(Notification(**notification))
 
 
 @shared_task(max_retries=5, default_retry_delay=5 * 60)
 def dispatch_notification(backend, recipient, notification):
-    """Dispatches a notification to a recipient for a specific backend."""
+    """Dispatches a notification to a recipient for a specific backend.
+
+    Due to possible data type restrictions for background tasks, the ``recipient``
+    and ``notification`` arguments are expected to be dictionaries.
+    """
     current_notifications_manager.handle_dispatch(
         backend, Recipient(**recipient), Notification(**notification)
     )

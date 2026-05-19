@@ -17,9 +17,10 @@ from invenio_notifications.backends.utils.loaders import JinjaTemplateLoaderMixi
 
 
 class EmailNotificationBackend(NotificationBackend, JinjaTemplateLoaderMixin):
-    """Email specific notification backend."""
+    """Notification backend for sending out notification emails."""
 
     id = "email"
+    """Unique ID of the backend."""
 
     def _resolve_email(self, recipient):
         """Resolve email address for recipient with proper domain handling.

@@ -21,7 +21,7 @@ class ContextGenerator(ABC):
 
     @abstractmethod
     def __call__(self, notification):
-        """Update notification context."""
+        """Update notification context in-place."""
         raise NotImplementedError()
 
 
@@ -30,7 +30,11 @@ class RecipientGenerator(ABC):
 
     @abstractmethod
     def __call__(self, notification, recipients):
-        """Add recipients."""
+        """Add further recipients for the ``notification`` to the ``recipients``.
+
+        This function takes information from the ``notification`` to add further
+        entries to the dictionary of ``recipients``.
+        """
         raise NotImplementedError()
 
 
@@ -38,11 +42,12 @@ class ConditionalRecipientGenerator(RecipientGenerator):
     """Conditional recipient generator for a notification."""
 
     def __init__(self, then_, else_):
-        """Ctor."""
+        """Constructor."""
         self.then_ = then_
         self.else_ = else_
 
     def _condition(self, notification, recipients):
+        """The condition to determine which of the recipient generators to use."""
         raise NotImplementedError()
 
     def __call__(self, notification, recipients):
@@ -61,7 +66,7 @@ class RecipientBackendGenerator(ABC):
 
     @abstractmethod
     def __call__(self, notification, recipient, backends):
-        """Update required recipient information and add backend id."""
+        """Update required recipient information and add backend ID."""
         raise NotImplementedError()
 
 
@@ -69,11 +74,11 @@ class EntityResolve(ContextGenerator):
     """Payload generator for a notification using the entity resolvers."""
 
     def __init__(self, key):
-        """Ctor."""
+        """Constructor."""
         self.key = key
 
     def __call__(self, notification):
-        """Update required recipient information and add backend id."""
+        """Update required recipient information and add backend ID."""
         entity_ref = dict_lookup(notification.context, self.key)
         if entity_ref is None:
             return notification
@@ -83,10 +88,10 @@ class EntityResolve(ContextGenerator):
 
 
 class UserEmailBackend(RecipientBackendGenerator):
-    """User related email backend generator for a notification."""
+    """Backend generator for adding the email backend."""
 
     def __call__(self, notification, recipient, backends):
-        """Add backend id to backends."""
+        """Add email backend ID to backends."""
         backend_id = EmailNotificationBackend.id
         backends.append(backend_id)
         return backend_id

@@ -7,7 +7,7 @@
 # Invenio-Notifications is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Template loaders for notification backend."""
+"""Template loaders for notification backends."""
 
 from flask import current_app
 from invenio_i18n import force_locale, get_locale
@@ -15,16 +15,22 @@ from invenio_i18n.proxies import current_i18n
 
 
 class JinjaTemplateLoaderMixin:
-    """Used only in NotificationBackend classes."""
+    """Custom Jinja template loader for rendering notification messages.
+
+    This will take ``notification.type`` into account when selecting the template
+    to render.
+
+    Note: This is only intended to be used in ``NotificationBackend`` classes.
+    """
 
     template_folder = "invenio_notifications"
 
     def render_template(self, notification, recipient):
         """Render template for a notification.
 
-        Fetch the template based on the notification type and return the template blocks.
+        Fetch the template based on ``notification.type`` and return the template blocks.
         More specific templates take precedence over less specific ones.
-        Rendered template will also take the locale into account.
+        If available, the rendered template will also take the locale into account.
         """
         # Take recipient locale into account. Fallback to default locale (set via config variable)
         locale = recipient.data.get("preferences", {}).get("locale")

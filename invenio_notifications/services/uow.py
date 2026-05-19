@@ -14,7 +14,7 @@ from ..tasks import broadcast_notification
 
 
 class NotificationOp(Operation):
-    """A notification operation."""
+    """A notification operation that sends notifications after transaction commit."""
 
     def __init__(self, notification):
         """Initialize operation."""

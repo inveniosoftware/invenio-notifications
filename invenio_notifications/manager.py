@@ -14,11 +14,12 @@ from invenio_notifications.tasks import broadcast_notification, dispatch_notific
 class NotificationManager:
     """Notification manager.
 
-    Taking care of building notifications and forwarding them to the backend(s).
+    Takes care of building notifications and forwarding them to the backend(s), based
+    on the ``NotificationBuilder`` registered for the notification's ``type``.
     """
 
     def __init__(self, backends, builders):
-        """Ctor."""
+        """Constructor."""
         self.backends = backends  # via config "NOTIFICATIONS_BACKENDS"
         self.builders = builders  # via config "NOTIFICATIONS_BUILDERS"
 
@@ -31,14 +32,21 @@ class NotificationManager:
 
     # Client
     def broadcast(self, notification, eager=False):
-        """Broadcast a notification via a Celery task."""
+        """Broadcast a notification via a background task."""
         self.validate(notification)
         task = broadcast_notification.si(notification.dumps())
         return task.apply() if eager else task.delay()
 
     # Consumer
     def handle_broadcast(self, notification):
-        """Handle a notification broadcast."""
+        """Handle a notification broadcast.
+
+        This looks up the configured ``NotificationBuilder`` for the notification's
+        type and uses it to resolve the context, build and filter the recipients
+        dictionary, and determine the backends to use.
+        For each recipient and backend, a background task will be created to dispatch
+        the notification.
+        """
         builder = self.builders[notification.type]
         # Resolve and expand entities
         builder.resolve_context(notification)

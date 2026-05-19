@@ -24,6 +24,13 @@ NOTIFICATIONS_BACKENDS = {}
 NOTIFICATIONS_BUILDERS = {}
 """Notification builders.
 
+The notification builders need to be registered by their type as lookup key for the
+notification manager to be able to look up the right notification builder to process
+scheduled notifications.
+This is because if run as background task, the notification manager will be running
+in a Python interpreter different from the one in which the notification was
+originally built.
+
 .. code-block::python
 
     NOTIFICATIONS_BUILDERS = {
