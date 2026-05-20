@@ -9,14 +9,16 @@
 
 """Generators for notification context."""
 
-from .backends import RecipientBackendGenerator, UserEmailBackend
-from .context import ContextGenerator, EntityResolve
+from .backends import EmailBackendGenerator, RecipientBackendGenerator, UserEmailBackend
+from .context import ContextGenerator, EntityResolve, EntityResolverContextGenerator
 from .recipients import ConditionalRecipientGenerator, RecipientGenerator
 
 __all__ = (
     "ConditionalRecipientGenerator",
     "ContextGenerator",
+    "EmailBackendGenerator",
     "EntityResolve",
+    "EntityResolverContextGenerator",
     "RecipientBackendGenerator",
     "RecipientGenerator",
     "UserEmailBackend",

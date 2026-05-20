@@ -23,7 +23,7 @@ class RecipientBackendGenerator(ABC):
         raise NotImplementedError()
 
 
-class UserEmailBackend(RecipientBackendGenerator):
+class EmailBackendGenerator(RecipientBackendGenerator):
     """Backend generator for adding the email backend."""
 
     def __call__(self, notification, recipient, backends):
@@ -31,3 +31,7 @@ class UserEmailBackend(RecipientBackendGenerator):
         backend_id = EmailNotificationBackend.id
         backends.append(backend_id)
         return backend_id
+
+
+UserEmailBackend = EmailBackendGenerator
+"""Alias for backwards-compatibility."""

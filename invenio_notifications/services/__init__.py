@@ -13,20 +13,20 @@ from .filters import KeyRecipientFilter, RecipientFilter
 from .generators import (
     ConditionalRecipientGenerator,
     ContextGenerator,
-    EntityResolve,
+    EmailBackendGenerator,
+    EntityResolverContextGenerator,
     RecipientBackendGenerator,
     RecipientGenerator,
-    UserEmailBackend,
 )
 
 __all__ = (
     "ConditionalRecipientGenerator",
     "ContextGenerator",
-    "EntityResolve",
+    "EmailBackendGenerator",
+    "EntityResolverContextGenerator",
     "KeyRecipientFilter",
     "NotificationBuilder",
     "RecipientBackendGenerator",
     "RecipientFilter",
     "RecipientGenerator",
-    "UserEmailBackend",
 )

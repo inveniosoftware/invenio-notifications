@@ -82,8 +82,9 @@ Here is an annotated example for a ``NotificationBuilder`` used as part of a cus
     from invenio_notifications.models import Notification
     from invenio_notifications.registry import EntityResolverRegistry
     from invenio_notifications.services.builders import NotificationBuilder
-    from invenio_notifications.services.generators import EntityResolve, UserEmailBackend
+    from invenio_notifications.services.generators import EmailBackendGenerator, EntityResolverContextGenerator
     from invenio_users_resources.notifications.filters import UserPreferencesRecipientFilter
+    from invenio_users_resources.notifications.generators import UserRecipient
 
     class MyRequestNotificationBuilder(NotificationBuilder):
         """Base notification builder for "accept" events on my custom request type."""
@@ -107,10 +108,10 @@ Here is an annotated example for a ``NotificationBuilder`` used as part of a cus
         # first resolve the referenced request and expand the `notification.context` data;
         # afterwards expand the referenced creator, topic, and receiver
         context = [
-            EntityResolve(key="request"),
-            EntityResolve(key="request.created_by"),
-            EntityResolve(key="request.topic"),
-            EntityResolve(key="request.receiver"),
+            EntityResolverContextGenerator(key="request"),
+            EntityResolverContextGenerator(key="request.created_by"),
+            EntityResolverContextGenerator(key="request.topic"),
+            EntityResolverContextGenerator(key="request.receiver"),
         ]
 
         # create a `Recipient` instance from the resolved request creator
@@ -126,7 +127,7 @@ Here is an annotated example for a ``NotificationBuilder`` used as part of a cus
 
         # use the email backend, which will render e.g. "my-request-type.accept.jinja"
         recipient_backends = [
-            UserEmailBackend(),
+            EmailBackendGenerator(),
         ]
 
     # ...

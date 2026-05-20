@@ -25,7 +25,7 @@ class ContextGenerator(ABC):
         raise NotImplementedError()
 
 
-class EntityResolve(ContextGenerator):
+class EntityResolverContextGenerator(ContextGenerator):
     """Payload generator for a notification using the entity resolvers."""
 
     def __init__(self, key):
@@ -38,3 +38,7 @@ class EntityResolve(ContextGenerator):
         entity = EntityResolverRegistry.resolve_entity(entity_ref)
         dict_set(notification.context, self.key, entity)
         return notification
+
+
+EntityResolve = EntityResolverContextGenerator
+"""Alias for backwards-compatibility."""
