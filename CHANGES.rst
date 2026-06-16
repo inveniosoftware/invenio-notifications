@@ -1,11 +1,24 @@
 ..
     SPDX-FileCopyrightText: 2023 CERN.
-    SPDX-FileCopyrightText: 2024 Graz University of Technology.
+    SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
     SPDX-FileCopyrightText: 2025 KTH Royal Institute of Technology.
     SPDX-License-Identifier: MIT
 
 Changes
 =======
+
+Version v2.0.0 (released 2026-06-16)
+
+- chore(setup): bump dependencies
+- chore(packaging): exclude .git-blame-ignore-revs from distribution
+- chore(git-blame): ignore SPDX license header commit
+- chore(licenses): update license headers to use SPDX
+- chore: apply clearer naming to generators
+- chore: add more information in the README
+- chore: use relative imports for the same package
+- chore: split notification generators into their own files
+- chore: add more documentation to the various moving parts
+- chore: re-export some utilities
 
 Version v1.3.0 (released 2026-03-09)
 
