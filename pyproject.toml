@@ -1,0 +1,133 @@
+# SPDX-FileCopyrightText: 2023-2026 Graz University of Technology.
+# SPDX-FileCopyrightText: 2023 CERN.
+# SPDX-FileCopyrightText: 2026 TU Wien.
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "invenio-notifications"
+dynamic = ["version"]
+description = "Invenio module for notifications support."
+readme = "README.rst"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "CERN", email = "info@inveniosoftware.org" },
+]
+keywords = [
+    "notifications",
+    "invenio",
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+]
+dependencies = [
+    "invenio-base>=2.3.0,<3.0.0",
+    "invenio-i18n>=3.0.0,<4.0.0",
+]
+
+[project.optional-dependencies]
+elasticsearch7 = [
+    "invenio-search[elasticsearch7]>=3.0.0,<4.0.0",
+]
+opensearch2 = [
+    "invenio-search[opensearch2]>=3.0.0,<4.0.0",
+]
+tests = [
+    "invenio-app>=3.0.0,<4.0.0",
+    "invenio-celery>=2.0.0,<3.0.0",
+    "invenio-mail>=2.0.0,<3.0.0",
+    "invenio-records-resources>=9.0.0,<10.0.0",
+    "pytest-black>=0.6.0",
+    "pytest-invenio>=4.0.0,<5.0.0",
+    "sphinx>=4.5.0",
+]
+
+[project.entry-points."invenio_base.api_apps"]
+invenio_notifications = "invenio_notifications:InvenioNotifications"
+
+[project.entry-points."invenio_base.api_blueprints"]
+invenio_notifications = "invenio_notifications.views:create_blueprint"
+
+[project.entry-points."invenio_base.apps"]
+invenio_notifications = "invenio_notifications:InvenioNotifications"
+
+[project.entry-points."invenio_base.blueprints"]
+invenio_notifications_settings = "invenio_notifications.views:create_blueprint_settings"
+
+[project.entry-points."invenio_base.finalize_app"]
+invenio_notifications = "invenio_notifications.ext:finalize_app"
+
+[project.entry-points."invenio_celery.tasks"]
+invenio_notifications = "invenio_notifications.tasks"
+
+[project.entry-points."invenio_i18n.translations"]
+messages = "invenio_notifications"
+
+[project.urls]
+Repository = "https://github.com/inveniosoftware/invenio-notifications"
+
+[tool.hatch.version]
+path = "invenio_notifications/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/invenio_notifications",
+]
+# see https://babel.pocoo.org/en/latest/messages.html#toml-configuration-format
+[tool.babel]
+[tool.babel.compile_catalog]
+directory = "invenio_notifications/translations/"
+use_fuzzy = true
+
+[tool.babel.extract_messages]
+copyright_holder = "CERN"
+msgid_bugs_address = "info@inveniosoftware.org"
+mapping_file = "pyproject.toml"
+output_file = "invenio_notifications/translations/messages.pot"
+add_comments = "NOTE"
+
+[tool.babel.init_catalog]
+input_file = "invenio_notifications/translations/messages.pot"
+output_dir = "invenio_notifications/translations/"
+
+[[tool.babel.mappings]]
+method = "javascript"
+pattern = "**.js"
+encoding = "utf-8"
+extract_messages = "$._, jQuery._"
+
+[[tool.babel.mappings]]
+method = "python"
+pattern = "**.py"
+encoding = "utf-8"
+
+[[tool.babel.mappings]]
+method = "jinja2"
+pattern = "**/templates/**.html"
+encoding = "utf-8"
+
+[tool.isort]
+profile = "black"
+
+[tool.pydocstyle]
+add_ignore = "D401"
+
+[tool.pytest.ini_options]
+addopts = '--black --isort --pydocstyle --doctest-glob="*.rst" --doctest-modules --cov=invenio_notifications --cov-report=term-missing'
+testpaths = "tests invenio_notifications"
+live_server_scope = "module"
+
+# UV needs to be told explicitly which extras are conflicting:
+# https://docs.astral.sh/uv/concepts/projects/config/#conflicting-dependencies
+[tool.uv]
+conflicts = [
+  [
+    { extra = "opensearch1" },
+    { extra = "opensearch2" },
+    { extra = "elasticsearch7" },
+  ]
+]
