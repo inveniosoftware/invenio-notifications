@@ -8,7 +8,7 @@
 from .ext import InvenioNotifications
 from .proxies import current_notifications, current_notifications_manager
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 
 __all__ = (
     "__version__",

@@ -7,6 +7,17 @@
 Changes
 =======
 
+Version v1.3.1 (released 2026-07-21)
+
+- chore(setup): migrate from setuptools to hatchling
+- chore(licenses): update license headers to use SPDX
+- chore: apply clearer naming to generators
+- chore: add more information in the README
+- chore: use relative imports for the same package
+- chore: split notification generators into their own files
+- chore: add more documentation to the various moving parts
+- chore: re-export some utilities
+
 Version v1.3.0 (released 2026-03-09)
 
 - feature: add `NOTIFICATIONS_GROUP_EMAIL_DOMAIN`
