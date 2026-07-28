@@ -73,6 +73,11 @@ Repository = "https://github.com/inveniosoftware/invenio-notifications"
 [tool.hatch.version]
 path = "invenio_notifications/__init__.py"
 
+[tool.hatch.build]
+artifacts = [
+  "*.mo",
+]
+
 [tool.hatch.build.targets.sdist]
 include = [
     "/invenio_notifications",
