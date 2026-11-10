@@ -18,17 +18,9 @@ class NotificationManager:
         self.backends = backends  # via config "NOTIFICATIONS_BACKENDS"
         self.builders = builders  # via config "NOTIFICATIONS_BUILDERS"
 
-    # def validate(self, notification):
-    #     """Validate notification object."""
-    #     # Validate the type
-    #     ...
-    #     # Validate context (if possible)
-    #     ...
-
     # Client
     def broadcast(self, notification, eager=False):
         """Broadcast a notification via a background task."""
-        self.validate(notification)
         task = broadcast_notification.si(notification.dumps())
         return task.apply() if eager else task.delay()
 

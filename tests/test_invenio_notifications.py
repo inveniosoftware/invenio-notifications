@@ -3,11 +3,14 @@
 
 """Module tests."""
 
+from unittest.mock import MagicMock, patch
+
 from flask import Flask
 
 from invenio_notifications import InvenioNotifications
 from invenio_notifications.backends.email import EmailNotificationBackend
-from invenio_notifications.models import Recipient
+from invenio_notifications.manager import NotificationManager
+from invenio_notifications.models import Notification, Recipient
 
 
 def test_version():
@@ -28,6 +31,46 @@ def test_init():
     assert "invenio-notifications" not in app.extensions
     ext.init_app(app)
     assert "invenio-notifications" in app.extensions
+
+
+class TestNotificationManagerBroadcast:
+    """Test NotificationManager.broadcast method."""
+
+    def test_broadcast_default_delay(self):
+        """Test broadcast calls task.delay by default."""
+        manager = NotificationManager(backends={}, builders={})
+        notification = Notification(type="test_event", context={"key": "value"})
+
+        with patch("invenio_notifications.manager.broadcast_notification") as mock_task:
+            mock_sig = MagicMock()
+            mock_task.si.return_value = mock_sig
+
+            result = manager.broadcast(notification)
+
+            mock_task.si.assert_called_once_with(
+                {"type": "test_event", "context": {"key": "value"}}
+            )
+            mock_sig.delay.assert_called_once_with()
+            mock_sig.apply.assert_not_called()
+            assert result == mock_sig.delay.return_value
+
+    def test_broadcast_eager(self):
+        """Test broadcast calls task.apply when eager=True."""
+        manager = NotificationManager(backends={}, builders={})
+        notification = Notification(type="test_event", context={"key": "value"})
+
+        with patch("invenio_notifications.manager.broadcast_notification") as mock_task:
+            mock_sig = MagicMock()
+            mock_task.si.return_value = mock_sig
+
+            result = manager.broadcast(notification, eager=True)
+
+            mock_task.si.assert_called_once_with(
+                {"type": "test_event", "context": {"key": "value"}}
+            )
+            mock_sig.apply.assert_called_once_with()
+            mock_sig.delay.assert_not_called()
+            assert result == mock_sig.apply.return_value
 
 
 class TestEmailResolution:
