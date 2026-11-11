@@ -1,8 +1,10 @@
 # SPDX-FileCopyrightText: 2023 CERN.
+# SPDX-FileCopyrightText: 2026 CESNET a.l.e.
 # SPDX-License-Identifier: MIT
 
 """Module tests."""
 
+import pytest
 from flask import Flask
 
 from invenio_notifications import InvenioNotifications
@@ -28,6 +30,29 @@ def test_init():
     assert "invenio-notifications" not in app.extensions
     ext.init_app(app)
     assert "invenio-notifications" in app.extensions
+
+
+class TestNotificationManagerBroadcast:
+    """Test NotificationManager broadcasting."""
+
+    @pytest.mark.parametrize("eager", [True, False])
+    def test_broadcast(self, notifications_app, example_builder, eager):
+        """Test broadcast executes both eager and delay paths."""
+        mail = notifications_app.extensions.get("mail")
+        assert mail
+
+        with notifications_app.app_context():
+            manager = notifications_app.extensions["invenio-notifications"].manager
+            notification = example_builder.build(recipient_email="user@example.org")
+
+            with mail.record_messages() as outbox:
+                result = manager.broadcast(notification, eager=eager)
+                assert result.successful()
+                assert len(outbox) == 1
+                sent_mail = outbox[0]
+                assert sent_mail.subject == "Test Subject"
+                assert "Test Body" in sent_mail.body
+                assert sent_mail.recipients == ["user@example.org"]
 
 
 class TestEmailResolution:
