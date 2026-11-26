@@ -13,7 +13,7 @@ dynamic = ["version"]
 description = "Invenio module for notifications support."
 readme = "README.rst"
 license = "MIT"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 authors = [
     { name = "CERN", email = "info@inveniosoftware.org" },
 ]
